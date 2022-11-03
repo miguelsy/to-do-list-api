@@ -1,0 +1,24 @@
+version: '3'
+
+services:
+  to_do_list_api:
+    build: ./express
+    volumes:
+      - ./express:/app
+    ports:
+      - 3000:3000
+    environment:
+      DB_HOSTNAME: to_do_list_db_server
+      DB_PORT: 3306
+      DB_USERNAME: root
+      DB_PASSWORD: root
+      DB_NAME: to_do_list_db
+    command: 'bash start.sh to_do_list_db_server:3306'
+    
+  to_do_list_db_server:
+    image: mysql:5.7.32
+    ports:
+      - 3306:3306
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=to_do_list_db

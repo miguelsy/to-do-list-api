@@ -1,0 +1,23 @@
+{
+  "name": "streamium",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "start": "./node_modules/.bin/nodemon app.js"
+  },
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "cookie-parser": "~1.4.4",
+    "cors": "^2.8.5",
+    "db-migrate": "^0.11.6",
+    "db-migrate-mysql": "^1.1.10",
+    "debug": "~2.6.9",
+    "express": "~4.16.1",
+    "fs": "0.0.1-security",
+    "knex": "^0.18.4",
+    "morgan": "~1.9.1",
+    "mysql": "^2.17.1",
+    "nodemon": "^1.19.1",
+    "shortid": "^2.2.14"
+  }
+}
