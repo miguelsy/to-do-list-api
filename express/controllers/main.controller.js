@@ -10,7 +10,36 @@ const toDoListController = function(repository) {
                 const data = await repository.getTasks();
 
                 return res.status(200).json({
-                    data: data
+                    data: data[0][0]
+                })
+            } catch (err) {
+                return res.status(error.errorCode).json({
+                  errorMessage: error.errorMessage  
+                })
+            }
+        },
+        getTask: async function(req, res) {
+            try {
+                const taskId = req.params.taskId;
+                
+                if (!taskId) {
+                    throw new Error({
+                        errorCode: 400,
+                        errorMessage: 'Missing or invalid parameters'
+                    })
+                }
+
+                await repository.getTask(taskId);
+
+                if (!data[0][0][0]) {
+                    throw new Error({
+                        errorCode: 404,
+                        errorMessage: 'Task not found'
+                    })
+                }
+
+                return res.status(200).json({
+                    data: data[0][0]
                 })
             } catch (err) {
                 return res.status(error.errorCode).json({
@@ -52,6 +81,13 @@ const toDoListController = function(repository) {
                 const taskTitle = payload.taskTitle;
                 const taskDescription = payload.taskDescription;
 
+                if (!taskId || !taskTitle || !taskDescription) {
+                    throw new Error({
+                        errorCode: 400,
+                        errorMessage: 'Missing or invalid parameters'
+                    })
+                }
+
                 const data = await repository.updateTask(taskId, taskTitle, taskDescription);
 
                 if (!data[0][0][0]) {
@@ -73,6 +109,14 @@ const toDoListController = function(repository) {
         deleteTask: async function(req, res) {
             try {
                 const taskId = req.params.taskId;
+
+                if (!taskId) {
+                    throw new Error({
+                        errorCode: 400,
+                        errorMessage: 'Missing or invalid parameters'
+                    })
+                }
+
                 await repository.deleteTask(taskId);
 
                 return res.status(200).json({
@@ -83,7 +127,7 @@ const toDoListController = function(repository) {
                   errorMessage: error.errorMessage  
                 })
             }
-        },
+        }
     }
 
     return controller;
