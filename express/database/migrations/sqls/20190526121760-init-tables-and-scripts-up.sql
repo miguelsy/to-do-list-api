@@ -82,3 +82,43 @@ CREATE PROCEDURE `delete_task` (
     WHERE
         id = p_id;
 END;
+
+DROP PROCEDURE IF EXISTS `increment_task_positions`;
+CREATE PROCEDURE `increment_task_positions` (
+    IN p_start_task_position INT, 
+    IN p_end_task_position INT
+) 
+BEGIN
+    UPDATE
+        tasks
+    SET
+        pos = pos + 1
+    WHERE
+        pos < p_start_task_position AND pos >= p_end_task_position;
+END;
+
+DROP PROCEDURE IF EXISTS `decrement_task_positions`;
+CREATE PROCEDURE `decrement_task_positions` (
+    IN p_start_task_position INT, 
+    IN p_end_task_position INT
+) BEGIN
+    UPDATE
+        videosInPlaylist
+    SET
+        pos = pos - 1
+    WHERE
+        pos > p_start_task_position AND pos <= p_end_task_position;
+END;
+
+DROP PROCEDURE IF EXISTS `update_task_position`;
+CREATE PROCEDURE `update_task_position` (
+    IN p_id VARCHAR(50),
+    IN p_new_task_position INT
+) BEGIN
+    UPDATE 
+        tasks
+    SET
+        pos = p_new_task_position,
+    WHERE
+        id = p_id;
+END;

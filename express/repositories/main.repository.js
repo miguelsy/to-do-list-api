@@ -56,7 +56,43 @@ const toDoListRepository = function(db) {
         error.code = 500;
         throw error;
       }
-    }
+    },
+    decrementTaskPositions: async function(oldTaskPosition, newTaskPosition) {
+      try {
+        return await db.raw(`CALL decrement_task_positions(?,?);`, [
+          oldTaskPosition,
+          newTaskPosition
+        ])
+      } catch (err) {
+        const error = new Error(err.message);
+        error.code = 500;
+        throw error;
+      }
+    },
+    incrementTaskPositions: async function(oldTaskPosition, newTaskPosition) {
+      try {
+        return await db.raw(`CALL increment_task_positions(?,?);`, [
+          oldTaskPosition,
+          newTaskPosition
+        ])
+      } catch (err) {
+        const error = new Error(err.message);
+        error.code = 500;
+        throw error;
+      }
+    },
+    updateTaskPosition: async function(taskId, newTaskPosition) {
+      try {
+        return await db.raw(`CALL update_task_position(?,?);`, [
+          taskId,
+          newTaskPosition
+        ])
+      } catch (err) {
+        const error = new Error(err.message);
+        error.code = 500;
+        throw error;
+      }
+    },
   }
 
   return repo;

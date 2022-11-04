@@ -14,7 +14,7 @@ const toDoListController = function(repository) {
                 })
             } catch (err) {
                 return res.status(err.code || 500).json({
-                  errorMessage: err.message  
+                    errorMessage: err.message  
                 })
             }
         },
@@ -41,7 +41,7 @@ const toDoListController = function(repository) {
                 })
             } catch (err) {
                 return res.status(err.code || 500).json({
-                  errorMessage: err.message  
+                    errorMessage: err.message  
                 })
             }
         },
@@ -63,6 +63,44 @@ const toDoListController = function(repository) {
 
                 return res.status(200).json({
                     data: payload
+                })
+            } catch (err) {
+                return res.status(err.code || 500).json({
+                  errorMessage: err.message  
+                })
+            }
+        },
+        updateTaskOrder: async function(req, res) {
+            try {
+                const payload = req.body;
+
+                const taskId = req.params.taskId;
+                const oldTaskPosition = payload.oldTaskPosition;
+                const newTaskPosition = payload.newTaskPosition;
+
+                const maxTaskPositionData = await repository.getMaxTaskPosition(); 
+                const maxTaskPosition = maxTaskPositionData[0][0][0]['maxTaskPosition'];
+
+                if (!taskId || !oldTaskPosition || !newTaskPosition || (newTaskPosition < 0) || (newTaskPosition > maxTaskPosition)) {
+                    const error = new Error('Missing or invalid parameters');
+                    error.code = 400;
+                    throw error;
+                }
+
+                if (newTaskPosition > oldTaskPosition) {
+                    await repository.decrementTaskPositions(oldTaskPosition, newTaskPosition);
+                } else if (newTaskPosition < oldTaskPosition) {
+                    await repository.incrementTaskPositions(oldTaskPosition, newTaskPosition);
+                }
+
+                await repository.updateTaskPosition(taskId, newTaskPosition);
+
+                return res.status(200).json({
+                    data: {
+                        taskId: taskId,
+                        oldTaskPosition: oldTaskPosition,
+                        newTaskPosition: newTaskPosition
+                    }
                 })
             } catch (err) {
                 return res.status(err.code || 500).json({
@@ -96,7 +134,11 @@ const toDoListController = function(repository) {
                 await repository.updateTask(taskId, taskTitle, taskDescription);
 
                 return res.status(200).json({
-                    data: payload
+                    data: {
+                        taskId: taskId,
+                        taskTitle: taskTitle,
+                        taskDescription: taskDescription
+                    }
                 })
             } catch (err) {
                 return res.status(err.code || 500).json({
@@ -117,7 +159,7 @@ const toDoListController = function(repository) {
                 await repository.deleteTask(taskId);
 
                 return res.status(200).json({
-                    data: taskId
+                    data: { taskId: taskId }
                 })
             } catch (err) {
                 return res.status(err.code || 500).json({
