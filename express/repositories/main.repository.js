@@ -4,10 +4,9 @@ const toDoListRepository = function(db) {
       try {
         return await db.raw(`CALL get_tasks();`)
       } catch (err) {
-        throw {
-          errorCode: 500,
-          errorMessage: err.message
-        };
+        const error = new Error(err.message);
+        error.code = 500;
+        throw error;
       }
     },
     getTask: async function(taskId) {
@@ -16,10 +15,9 @@ const toDoListRepository = function(db) {
           taskId
         ])
       } catch (err) {
-        throw {
-          errorCode: 500,
-          errorMessage: err.message
-        };
+        const error = new Error(err.message);
+        error.code = 500;
+        throw error;
       }
     },
     createTask: async function(taskId, taskTitle, taskDescription) {
@@ -30,10 +28,9 @@ const toDoListRepository = function(db) {
           taskDescription
         ])
       } catch (err) {
-        throw {
-          errorCode: 500,
-          errorMessage: err.message
-        };
+        const error = new Error(err.message);
+        error.code = 500;
+        throw error;
       }
     },
     updateTask: async function(taskId, taskTitle, taskDescription) {
@@ -44,10 +41,9 @@ const toDoListRepository = function(db) {
           taskDescription
         ])
       } catch (err) {
-        throw {
-          errorCode: 500,
-          errorMessage: err.message
-        };
+        const error = new Error(err.message);
+        error.code = 500;
+        throw error;
       }
     },
     deleteTask: async function(taskId) {
@@ -56,10 +52,9 @@ const toDoListRepository = function(db) {
           taskId
         ])
       } catch (err) {
-        throw {
-          errorCode: 500,
-          errorMessage: err.message
-        };
+        const error = new Error(err.message);
+        error.code = 500;
+        throw error;
       }
     }
   }

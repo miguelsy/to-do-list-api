@@ -9,6 +9,7 @@ const controller = require('../controllers/main.controller')(repository);
 router.get('/', controller.getHomePage);
 
 router.get('/tasks', controller.getTasks);
+router.get('/tasks/:taskId', controller.getTask);
 router.post('/tasks', controller.createTask);
 router.patch('/tasks/:taskId', controller.updateTask);
 router.delete('/tasks/:taskId', controller.deleteTask);
