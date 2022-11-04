@@ -51,9 +51,9 @@ CREATE PROCEDURE `create_task` (
         p_task_description,
         (
             SELECT
-            IF(MAX(pos) IS NULL, 0, MAX(pos) + 1)
+                IF(MAX(pos) IS NULL, 0, MAX(pos) + 1)
             FROM
-            tasks
+                tasks AS t
         )
     );
 END;

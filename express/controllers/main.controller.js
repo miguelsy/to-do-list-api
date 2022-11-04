@@ -62,7 +62,7 @@ const toDoListController = function(repository) {
                     })
                 }
                 
-                await repository.getTasks(taskId, taskTitle, taskDescription);
+                await repository.createTask(taskId, taskTitle, taskDescription);
 
                 return res.status(200).json({
                     data: payload
