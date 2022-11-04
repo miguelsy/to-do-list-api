@@ -78,10 +78,13 @@ const toDoListController = function(repository) {
                 const oldTaskPosition = payload.oldTaskPosition;
                 const newTaskPosition = payload.newTaskPosition;
 
+                const taskToUpdateData = await repository.getTask(taskId);
+                const taskToUpdate = taskToUpdateData[0][0][0];
+
                 const maxTaskPositionData = await repository.getMaxTaskPosition(); 
                 const maxTaskPosition = maxTaskPositionData[0][0][0]['maxTaskPosition'];
 
-                if (!taskId || !oldTaskPosition || !newTaskPosition || (newTaskPosition < 0) || (newTaskPosition > maxTaskPosition)) {
+                if (!taskId || !taskToUpdate || (oldTaskPosition === 'undefined') || (newTaskPosition === 'undefined') || (taskToUpdate.pos != oldTaskPosition) || (newTaskPosition < 0) || (newTaskPosition > maxTaskPosition)) {
                     const error = new Error('Missing or invalid parameters');
                     error.code = 400;
                     throw error;

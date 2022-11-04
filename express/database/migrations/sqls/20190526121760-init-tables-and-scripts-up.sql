@@ -83,6 +83,15 @@ CREATE PROCEDURE `delete_task` (
         id = p_id;
 END;
 
+DROP PROCEDURE IF EXISTS `get_max_task_position`;
+CREATE PROCEDURE `get_max_task_position` () 
+BEGIN
+    SELECT
+        MAX(pos) AS maxTaskPosition
+    FROM
+        tasks;
+END;
+
 DROP PROCEDURE IF EXISTS `increment_task_positions`;
 CREATE PROCEDURE `increment_task_positions` (
     IN p_start_task_position INT, 
@@ -103,7 +112,7 @@ CREATE PROCEDURE `decrement_task_positions` (
     IN p_end_task_position INT
 ) BEGIN
     UPDATE
-        videosInPlaylist
+        tasks
     SET
         pos = pos - 1
     WHERE
@@ -118,7 +127,7 @@ CREATE PROCEDURE `update_task_position` (
     UPDATE 
         tasks
     SET
-        pos = p_new_task_position,
+        pos = p_new_task_position
     WHERE
         id = p_id;
 END;

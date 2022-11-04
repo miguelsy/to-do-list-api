@@ -57,6 +57,15 @@ const toDoListRepository = function(db) {
         throw error;
       }
     },
+    getMaxTaskPosition: async function(taskId) {
+      try {
+        return await db.raw(`CALL get_max_task_position();`);
+      } catch (err) {
+        const error = new Error(err.message);
+        error.code = 500;
+        throw error;
+      }
+    },
     decrementTaskPositions: async function(oldTaskPosition, newTaskPosition) {
       try {
         return await db.raw(`CALL decrement_task_positions(?,?);`, [
